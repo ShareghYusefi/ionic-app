@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -7,7 +8,9 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class Tab1Page {
+  constructor(private navCtrl: NavController) {}
 
-  constructor() {}
-
+  openForm() {
+    this.navCtrl.navigateForward('/tabs/students-form');
+  }
 }
