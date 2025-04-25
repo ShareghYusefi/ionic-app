@@ -1,7 +1,7 @@
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
@@ -15,6 +15,7 @@ import { StudentFormComponent } from '../student-form/student-form.component';
     FormsModule,
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
+    ReactiveFormsModule,
   ],
   declarations: [Tab1Page, StudentFormComponent],
 })

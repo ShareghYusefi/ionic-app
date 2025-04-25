@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="student" (ngSubmit)="onSubmit()">
   <ion-header>
     <ion-toolbar>
       <ion-title>Add Student</ion-title>
@@ -9,21 +9,33 @@
     <ion-item>
       <ion-input
         name="name"
-        [(ngModel)]="student.name"
+        formControlName="name"
         type="text"
         label="Name"
         labelPlacement="floating"
         placeholder="Enter name"
         [clearInput]="true"
-        helperText="Please enter your full name"
-        required
+        [required]="true"
+        [minlength]="3"
       ></ion-input>
     </ion-item>
+    <!-- Error Messages -->
+    <ion-note
+      color="danger"
+      *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+    >
+      <ng-container *ngIf="name?.hasError('required')">
+        Name is required
+      </ng-container>
+      <ng-container *ngIf="name?.hasError('minlength')">
+        Name must be at least 3 characters long
+      </ng-container>
+    </ion-note>
 
     <ion-item>
       <ion-input
         name="age"
-        [(ngModel)]="student.age"
+        formControlName="age"
         type="number"
         label="Age"
         labelPlacement="floating"
@@ -36,9 +48,11 @@
     <ion-item>
       <ion-select
         name="level"
-        [(ngModel)]="student.level"
+        formControlName="level"
         label="Level"
         placeholder="Please select"
+        errorText="Please select a level"
+        [required]="true"
       >
         <ion-select-option value="undergrad">Undergraduate</ion-select-option>
         <ion-select-option value="postgrad">Postgraduate</ion-select-option>
@@ -50,7 +64,7 @@
         <ion-button color="danger" (click)="closeForm()">Cancel</ion-button>
       </ion-buttons>
       <ion-buttons slot="end">
-        <ion-button type="submit" (click)="onSubmit()" color="success"
+        <ion-button type="submit" color="success" [disabled]="student.invalid"
           >Save</ion-button
         >
       </ion-buttons>
