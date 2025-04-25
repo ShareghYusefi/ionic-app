@@ -11,6 +11,24 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-list>
+    <ion-item *ngFor="let student of students; let index = index">
+      <ion-avatar slot="start">
+        <img
+          [src]="'https://picsum.photos/80/80?random=' + index"
+          alt="avatar"
+        />
+      </ion-avatar>
+      <ion-label>{{ student.name }}</ion-label>
+      <ion-button color="light">
+        <ion-icon name="pencil-outline" color="success"></ion-icon>
+      </ion-button>
+      <ion-button slot="end" color="danger" (click)="delete(student.id)">
+        <ion-icon name="trash" color="light"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
   <ion-fab slot="fixed" horizontal="end" vertical="bottom">
     <ion-fab-button (click)="openForm()">
       <ion-icon name="person-add-outline"></ion-icon>
