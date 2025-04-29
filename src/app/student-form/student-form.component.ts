@@ -67,16 +67,39 @@ export class StudentFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Form submitted!', this.student.value);
-    this.schoolService.addStudent(this.student.value).subscribe(
-      (response) => {
-        console.log('Student added!', response);
-        this.student.reset(); // Reset the form after submission
-        this.navCtrl.navigateBack('/tabs/tab1');
-      },
-      (error) => {
-        console.error('Error adding student', error);
-      }
-    );
+    // check if form is valid
+    if (this.student.invalid) {
+      console.log('Form is invalid!');
+      return;
+    }
+    // check for id in route params
+    let id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      // update student data
+      this.schoolService
+        .updateStudent(parseInt(id), this.student.value)
+        .subscribe(
+          (response) => {
+            console.log('Student updated!', response);
+            this.student.reset(); // Reset the form after submission
+            this.navCtrl.navigateBack('/tabs/tab1');
+          },
+          (error) => {
+            console.error('Error updating student', error);
+          }
+        );
+    } else {
+      // add student data
+      this.schoolService.addStudent(this.student.value).subscribe(
+        (response) => {
+          console.log('Student added!', response);
+          this.student.reset(); // Reset the form after submission
+          this.navCtrl.navigateBack('/tabs/tab1');
+        },
+        (error) => {
+          console.error('Error adding student', error);
+        }
+      );
+    }
   }
 }

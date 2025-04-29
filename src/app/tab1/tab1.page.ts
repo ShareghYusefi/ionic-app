@@ -18,6 +18,17 @@ export class Tab1Page {
   students: Student[] = [];
 
   ngOnInit() {
+    // get students from the server
+    this.loadStudents();
+  }
+
+  ionViewDidEnter() {
+    // refresh the list of students
+    this.loadStudents();
+  }
+
+  // get students from the server
+  loadStudents() {
     this.schoolService.getStudents().subscribe((response) => {
       this.students = response;
     });
