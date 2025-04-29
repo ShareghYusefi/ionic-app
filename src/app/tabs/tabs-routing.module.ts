@@ -24,6 +24,10 @@ const routes: Routes = [
           import('../tab3/tab3.module').then((m) => m.Tab3PageModule),
       },
       {
+        path: 'students-form/:id',
+        component: StudentFormComponent,
+      },
+      {
         path: 'students-form',
         component: StudentFormComponent,
       },

@@ -20,7 +20,7 @@
         />
       </ion-avatar>
       <ion-label>{{ student.name }}</ion-label>
-      <ion-button color="light">
+      <ion-button color="light" (click)="openForm(student.id)">
         <ion-icon name="pencil-outline" color="success"></ion-icon>
       </ion-button>
       <ion-button slot="end" color="danger" (click)="delete(student.id)">

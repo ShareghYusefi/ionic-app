@@ -32,7 +32,8 @@ export class Tab1Page {
     });
   }
 
-  openForm() {
-    this.navCtrl.navigateForward('/tabs/students-form');
+  // ? means that the parameter is optional
+  openForm(id?: number) {
+    this.navCtrl.navigateForward('/tabs/students-form' + (id ? '/' + id : ''));
   }
 }

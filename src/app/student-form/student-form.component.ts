@@ -3,6 +3,7 @@ import { NavController } from '@ionic/angular';
 import { SchoolService } from '../school.service';
 import { Student } from '../student';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-student-form',
@@ -14,7 +15,8 @@ export class StudentFormComponent implements OnInit {
   constructor(
     private navCtrl: NavController,
     private schoolService: SchoolService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute
   ) {}
 
   student!: FormGroup;
@@ -26,6 +28,34 @@ export class StudentFormComponent implements OnInit {
       age: [18, [Validators.required, Validators.min(18)]],
       level: ['', [Validators.required]],
     });
+
+    // get id of our student from the URL
+    this.route.paramMap.subscribe(
+      (params) => {
+        let id = params.get('id');
+        if (id) {
+          // get our student data from the server
+          this.schoolService.getStudent(parseInt(id)).subscribe(
+            (response: Student) => {
+              console.log('Get Student', response);
+              // update the form with the student data
+              this.student.patchValue({
+                id: response.id,
+                name: response.name,
+                age: response.age,
+                level: response.level,
+              });
+            },
+            (error) => {
+              console.error('Error getting student from db', error);
+            }
+          );
+        }
+      },
+      (error) => {
+        console.error('Error getting student id from params', error);
+      }
+    );
   }
 
   get name() {
