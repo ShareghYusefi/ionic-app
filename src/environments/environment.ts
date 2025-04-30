@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  message: 'Development mode',
+  school_api_service: 'http://localhost:3000',
 };
 
 /*
