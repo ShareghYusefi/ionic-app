@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
 import { EmailComposer } from 'capacitor-email-composer';
+import {
+  AndroidSettings,
+  IOSSettings,
+  NativeSettings,
+} from 'capacitor-native-settings';
 
 @Component({
   selector: 'app-tab3',
@@ -26,5 +31,37 @@ export class Tab3Page {
       .catch((error) => {
         console.error('Error checking email account:', error);
       });
+  }
+
+  async openSettings(setting: string) {
+    let androidOption = AndroidSettings.Keyboard; // default
+    let iosOption = IOSSettings.Keyboard; // default
+
+    switch (setting) {
+      case 'keyboard':
+        androidOption = AndroidSettings.Keyboard;
+        iosOption = IOSSettings.Keyboard;
+        break;
+      case 'wifi':
+        androidOption = AndroidSettings.Wifi;
+        iosOption = IOSSettings.WiFi;
+        break;
+      case 'bluetooth':
+        androidOption = AndroidSettings.Bluetooth;
+        iosOption = IOSSettings.Bluetooth;
+        break;
+      case 'data':
+        androidOption = AndroidSettings.Settings;
+        iosOption = IOSSettings.App;
+        break;
+      default:
+        console.log('Invalid setting');
+    }
+
+    // Open the settings page
+    await NativeSettings.open({
+      optionAndroid: androidOption,
+      optionIOS: iosOption,
+    });
   }
 }

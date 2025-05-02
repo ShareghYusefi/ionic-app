@@ -1,8 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title> Tab 3 </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,10 +11,15 @@
     </ion-toolbar>
   </ion-header>
   <!-- Email button -->
-   <ion-button expanfulld="" color="primary" (click)="openEmail()">
+  <ion-button expanfulld="" color="primary" (click)="openEmail()">
     <ion-icon name="mail-outline"></ion-icon>
     <ion-label>Email</ion-label>
-   </ion-button>
+  </ion-button>
+
+  <ion-button (click)="openSettings('keyboard')">Open Keyboard</ion-button>
+  <ion-button (click)="openSettings('settings')">Open Settings</ion-button>
+  <ion-button (click)="openSettings('wifi')">Open Wifi</ion-button>
+  <ion-button (click)="openSettings('bluetooth')">Open Bluetooth</ion-button>
 
   <app-explore-container name="Tab 3 page"></app-explore-container>
 </ion-content>

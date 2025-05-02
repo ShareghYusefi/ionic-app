@@ -29,6 +29,7 @@
     "@capacitor/status-bar": "7.0.1",
     "@ionic/angular": "^8.0.0",
     "capacitor-email-composer": "^7.0.0",
+    "capacitor-native-settings": "^7.0.1",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
