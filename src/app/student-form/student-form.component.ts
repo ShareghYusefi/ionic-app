@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { SchoolService } from '../school.service';
 import { Student } from '../student';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,7 +16,8 @@ export class StudentFormComponent implements OnInit {
     private navCtrl: NavController,
     private schoolService: SchoolService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastController: ToastController
   ) {}
 
   student!: FormGroup;
@@ -62,6 +63,28 @@ export class StudentFormComponent implements OnInit {
     return this.student.get('name');
   }
 
+  async presentToast(
+    position: 'top' | 'middle' | 'bottom',
+    message: string,
+    duration: number,
+    color?:
+      | 'primary'
+      | 'secondary'
+      | 'tertiary'
+      | 'success'
+      | 'warning'
+      | 'danger'
+  ) {
+    const toast = await this.toastController.create({
+      message, // same as message: message,
+      duration, // same as duration: duration,
+      position, // same as position: position,
+      color, // same as color: color,
+    });
+
+    await toast.present();
+  }
+
   closeForm() {
     this.navCtrl.navigateBack('/tabs/tab1');
   }
@@ -81,6 +104,7 @@ export class StudentFormComponent implements OnInit {
         .subscribe(
           (response) => {
             console.log('Student updated!', response);
+            this.presentToast('top', 'Student updated!', 2000, 'success');
             this.student.reset(); // Reset the form after submission
             this.navCtrl.navigateBack('/tabs/tab1');
           },
@@ -93,6 +117,7 @@ export class StudentFormComponent implements OnInit {
       this.schoolService.addStudent(this.student.value).subscribe(
         (response) => {
           console.log('Student added!', response);
+          this.presentToast('top', 'Student added!', 2000, 'success');
           this.student.reset(); // Reset the form after submission
           this.navCtrl.navigateBack('/tabs/tab1');
         },
