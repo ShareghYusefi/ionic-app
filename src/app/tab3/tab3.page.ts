@@ -50,7 +50,7 @@ export class Tab3Page {
         androidOption = AndroidSettings.Bluetooth;
         iosOption = IOSSettings.Bluetooth;
         break;
-      case 'data':
+      case 'settings':
         androidOption = AndroidSettings.Settings;
         iosOption = IOSSettings.App;
         break;
