@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { SmsManager } from '@byteowls/capacitor-sms';
 import { Contacts, EmailType, PhoneType } from '@capacitor-community/contacts';
 import {
   LocalNotifications,
   PermissionStatus,
   ScheduleOptions,
 } from '@capacitor/local-notifications';
+import { CallNumber } from 'capacitor-call-number';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -121,7 +123,25 @@ export class Tab2Page {
     console.log(res.contactId);
   };
 
-  callContact = async (contact: any) => {};
+  callContact = async (contact: any) => {
+    await CallNumber.call({
+      number: contact.phones?.[0]?.number,
+      bypassAppChooser: false, // shows the default call dialer screen
+    });
+  };
 
-  createandsendSMS = async (contact: any) => {};
+  createandsendSMS = async (contact: any) => {
+    const numbers: string[] = [contact.phones?.[0]?.number];
+    SmsManager.send({
+      numbers: numbers,
+      text: 'This is a example SMS',
+    })
+      .then(() => {
+        // success toast message
+        console.log('SMS sent successfully');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 }
