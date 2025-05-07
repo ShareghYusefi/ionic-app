@@ -15,13 +15,18 @@
   <ion-label> {{ message }} </ion-label>
   <ion-label> {{ apiUrl }} </ion-label>
 
-  <ion-button (click)="requestPermission()">Request Permission</ion-button>
-  <ion-button (click)="scheduleNotification(3)"
+  <ion-button (click)="requestPermission()" expand="full"
+    >Request Permission</ion-button
+  >
+  <ion-button (click)="scheduleNotification(3)" expand="full"
     >Schedule Notification</ion-button
   >
 
   <ion-button (click)="retrieveListOfContacts()" expand="full"
     >Fetch Contacts</ion-button
+  >
+  <ion-button (click)="createNewContact()" expand="full"
+    >Create Contact</ion-button
   >
 
   <ion-list>
@@ -31,10 +36,10 @@
         <p>{{ contact.phones[0]?.number || 'No Phone number' }}</p>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option color="primary">
+        <ion-item-option (click)="callContact(contact)" color="primary">
           <ion-icon name="call"></ion-icon>
         </ion-item-option>
-        <ion-item-option color="secondary">
+        <ion-item-option (click)="createandsendSMS(contact)" color="secondary">
           <ion-icon name="mail"></ion-icon>
         </ion-item-option>
       </ion-item-options>

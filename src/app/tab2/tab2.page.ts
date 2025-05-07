@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Contacts } from '@capacitor-community/contacts';
+import { Contacts, EmailType, PhoneType } from '@capacitor-community/contacts';
 import {
   LocalNotifications,
   PermissionStatus,
@@ -80,4 +80,48 @@ export class Tab2Page {
     this.contacts = result.contacts;
     console.log('Contacts:', JSON.stringify(result.contacts));
   };
+
+  createNewContact = async () => {
+    const res = await Contacts.createContact({
+      contact: {
+        name: {
+          given: 'Susan',
+          family: 'Sally',
+        },
+        birthday: {
+          year: 1990,
+          month: 1,
+          day: 1,
+        },
+        phones: [
+          {
+            type: PhoneType.Mobile,
+            label: 'mobile',
+            number: '+1-212-456-7890',
+          },
+          {
+            type: PhoneType.Work,
+            label: 'work',
+            number: '212-456-7890',
+          },
+        ],
+        emails: [
+          {
+            type: EmailType.Work,
+            label: 'work',
+            address: 'example@example.com',
+          },
+        ],
+        urls: ['example.com'],
+      },
+    });
+
+    // TODO:: toast message of successful contact creation
+
+    console.log(res.contactId);
+  };
+
+  callContact = async (contact: any) => {};
+
+  createandsendSMS = async (contact: any) => {};
 }
