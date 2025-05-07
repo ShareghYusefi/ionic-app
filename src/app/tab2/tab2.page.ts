@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Contacts } from '@capacitor-community/contacts';
 import {
   LocalNotifications,
   PermissionStatus,
@@ -15,6 +16,7 @@ import { environment } from 'src/environments/environment';
 export class Tab2Page {
   message!: string;
   apiUrl!: string;
+  contacts: any[] = [];
 
   constructor() {}
 
@@ -63,4 +65,19 @@ export class Tab2Page {
       console.error('Error scheduling notification:', error);
     }
   }
+
+  retrieveListOfContacts = async () => {
+    const projection = {
+      // Specify which fields should be retrieved.
+      name: true,
+      phones: true,
+    };
+
+    const result = await Contacts.getContacts({
+      projection,
+    });
+
+    this.contacts = result.contacts;
+    console.log('Contacts:', JSON.stringify(result.contacts));
+  };
 }
