@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { SmsManager } from '@byteowls/capacitor-sms';
 import { Contacts, EmailType, PhoneType } from '@capacitor-community/contacts';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 import {
   LocalNotifications,
   PermissionStatus,
-  ScheduleOptions,
+  ScheduleEvery,
 } from '@capacitor/local-notifications';
+import { Share } from '@capacitor/share';
 import { CallNumber } from 'capacitor-call-number';
 import { environment } from 'src/environments/environment';
 
@@ -44,7 +46,11 @@ export class Tab2Page {
     }
   }
 
-  async scheduleNotification(seconds: number) {
+  async scheduleNotification(
+    seconds: number,
+    repeatArg?: boolean,
+    everyArg?: ScheduleEvery
+  ) {
     try {
       await LocalNotifications.schedule({
         notifications: [
@@ -59,6 +65,8 @@ export class Tab2Page {
                   // add 3 seconds
                   seconds * 1000
               ),
+              repeats: repeatArg,
+              every: everyArg,
             },
           },
         ],
@@ -143,5 +151,63 @@ export class Tab2Page {
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  // read file from assets folder
+  copyFileToShareLocation = async (filename: string) => {
+    try {
+      // 1. get the file from assets folder
+      const response = await fetch(`assets/${filename}`);
+      // get file blog(binary large object): a collection of binary data (1's abd 0's) stored as a single entity
+      // Example of BLOB: image, audio, video, etc.
+      const blob = await response.blob(); // blob is a file-like object of immutable, raw data
+
+      // 2. transform blob to base64 string data format: base64 is a binary-to-text endoding used by web browsers and mobile devices to display images
+      const reader = new FileReader(); // file reader is a built-in JavaScript object that allows you to read the contents of files stored on the user's computer
+      // create a prmise to read the file as base64
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        // When file is read successfully, this event is triggered to resolve the promise
+        reader.onloadend = () => {
+          resolve(reader.result as string); // resolve the promise with the base64 string
+        };
+        reader.onerror = reject; // if there is an error, reject the promise
+        reader.readAsDataURL(blob); // read the file as base64 string
+      });
+      // 3. wait for the promise to resolve
+      const base64String = await base64Promise;
+      console.log('Base64 String:', base64String);
+
+      // 4. create a file in the cache directory of mobile device
+      const result = await Filesystem.writeFile({
+        path: filename,
+        data: base64String.split(',')[1], // split the base64 string to get the data part
+        directory: Directory.Cache,
+      });
+
+      // return the uri of the file
+      return result.uri;
+    } catch (error) {
+      console.error('Error copying file:', error);
+      return null; // return null if there is an error
+    }
+  };
+
+  // Share file with other apps
+  shareWithApps = async () => {
+    // get the file to share from assets folder.
+    const fileURI = await this.copyFileToShareLocation('basketball.png');
+
+    if (fileURI) {
+      try {
+        await Share.share({
+          title: 'See cool stuff',
+          text: 'Really awesome thing you need to see right meow',
+          url: fileURI,
+          dialogTitle: 'Share with buddies',
+        });
+      } catch (error) {
+        console.error('Error sharing file:', error);
+      }
+    }
   };
 }
