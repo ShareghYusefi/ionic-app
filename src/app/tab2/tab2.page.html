@@ -29,6 +29,14 @@
     >Create Contact</ion-button
   >
   <ion-button (click)="shareWithApps()" expand="full">Share Image</ion-button>
+  <ion-button (click)="takePhotoAndSaveToGallery()" expand="full"
+    >Take Photo</ion-button
+  >
+  <ion-button (click)="selectAndCropPhoto()" expand="full"
+    >Crop Photo</ion-button
+  >
+
+  <img [src]="imageUrl" *ngIf="imageUrl" />
 
   <ion-list>
     <ion-item-sliding *ngFor="let contact of contacts">

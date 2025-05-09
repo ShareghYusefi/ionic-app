@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SmsManager } from '@byteowls/capacitor-sms';
 import { Contacts, EmailType, PhoneType } from '@capacitor-community/contacts';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import {
   LocalNotifications,
@@ -210,4 +211,32 @@ export class Tab2Page {
       }
     }
   };
+
+  imageUrl: string | undefined;
+
+  takePhotoAndSaveToGallery = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        source: CameraSource.Camera, // take photo from camera
+        quality: 90,
+        allowEditing: true, // allow cropping
+        resultType: CameraResultType.Uri,
+        saveToGallery: true, // save to gallery
+      });
+
+      if (!image || !image.path) {
+        console.error('No image selected');
+        return;
+      }
+
+      this.imageUrl = image.webPath; // get the image web path
+
+      return image.path; // return the image path
+    } catch (error) {
+      console.error('Error taking photo:', error);
+      return null; // return null if there is an error
+    }
+  };
+
+  selectAndCropPhoto = async () => {};
 }
