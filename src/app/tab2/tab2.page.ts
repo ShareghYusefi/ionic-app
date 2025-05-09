@@ -238,5 +238,29 @@ export class Tab2Page {
     }
   };
 
-  selectAndCropPhoto = async () => {};
+  selectAndCropPhoto = async () => {
+    try {
+      const image = await Camera.getPhoto({
+        source: CameraSource.Photos, // select photo from gallery
+        quality: 90,
+        allowEditing: true, // allow cropping
+        resultType: CameraResultType.Base64, // get the image as base64 string
+      });
+
+      // write to the file system
+      const filename = `cropped-${new Date().getTime()}.png`; // create a unique filename
+      const result = await Filesystem.writeFile({
+        path: filename,
+        data: image.base64String ?? '',
+        directory: Directory.Cache,
+      });
+      // assing filename to imageUrl
+      this.imageUrl = result.uri; // get the image web path
+
+      return result.uri; // return the image path
+    } catch (error) {
+      console.error('Error getting photo:', error);
+      return null; // return null if there is an error
+    }
+  };
 }
