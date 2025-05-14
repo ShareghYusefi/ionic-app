@@ -36,6 +36,10 @@
     >Crop Photo</ion-button
   >
 
+  <ion-button (click)="preloadAudio()" expand="full">Preload audio</ion-button>
+  <ion-button (click)="startAudio()" expand="full">Start audio</ion-button>
+  <ion-button (click)="stopAudio()" expand="full">Stop audio</ion-button>
+
   <img [src]="imageUrl" *ngIf="imageUrl" />
 
   <ion-list>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SmsManager } from '@byteowls/capacitor-sms';
 import { Contacts, EmailType, PhoneType } from '@capacitor-community/contacts';
+import { NativeAudio } from '@capacitor-community/native-audio';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Capacitor } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
@@ -10,6 +11,7 @@ import {
   ScheduleEvery,
 } from '@capacitor/local-notifications';
 import { Share } from '@capacitor/share';
+import { Platform } from '@ionic/angular';
 import { CallNumber } from 'capacitor-call-number';
 import { environment } from 'src/environments/environment';
 
@@ -24,7 +26,13 @@ export class Tab2Page {
   apiUrl!: string;
   contacts: any[] = [];
 
-  constructor() {}
+  constructor(private platform: Platform) {
+    // check if android platform is ready
+    this.platform.ready().then(() => {
+      // preload audio file
+      this.preloadAudio();
+    });
+  }
 
   ngOnInit() {
     this.message = environment.message;
@@ -266,5 +274,31 @@ export class Tab2Page {
       console.error('Error getting photo:', error);
       return null; // return null if there is an error
     }
+  };
+
+  preloadAudio = async () => {
+    try {
+      await NativeAudio.preload({
+        assetId: 'sampleAudio',
+        assetPath: 'assets/sample_audio.mp3', // relative path to the audio file from public folder
+        audioChannelNum: 1,
+        isUrl: false,
+      });
+      console.log('Audio preloaded successfully');
+    } catch (error) {
+      console.error('Error preloading audio:', error);
+    }
+  };
+
+  startAudio = async () => {
+    await NativeAudio.play({
+      assetId: 'sampleAudio',
+    });
+  };
+
+  stopAudio = async () => {
+    await NativeAudio.stop({
+      assetId: 'sampleAudio',
+    });
   };
 }
