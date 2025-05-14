@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SmsManager } from '@byteowls/capacitor-sms';
 import { Contacts, EmailType, PhoneType } from '@capacitor-community/contacts';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import {
   LocalNotifications,
@@ -254,8 +255,11 @@ export class Tab2Page {
         data: image.base64String ?? '',
         directory: Directory.Cache,
       });
-      // assing filename to imageUrl
-      this.imageUrl = result.uri; // get the image web path
+      console.log('Result URI: ', result.uri);
+      let URIWebPath = Capacitor.convertFileSrc(result.uri);
+      console.log('URI WEB Path: ', URIWebPath);
+      // Convert to web view-safe path
+      this.imageUrl = URIWebPath;
 
       return result.uri; // return the image path
     } catch (error) {
