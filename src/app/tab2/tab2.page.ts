@@ -278,11 +278,18 @@ export class Tab2Page {
 
   preloadAudio = async () => {
     try {
+      const fileURI = await this.copyFileToShareLocation('sample_audio.mp3');
+
+      if (!fileURI) {
+        console.error('Error copying audio file');
+        return;
+      }
+
       await NativeAudio.preload({
         assetId: 'sampleAudio',
-        assetPath: 'assets/sample_audio.mp3', // relative path to the audio file from public folder
+        assetPath: fileURI, // path will have file:// prefix
         audioChannelNum: 1,
-        isUrl: false,
+        isUrl: true,
       });
       console.log('Audio preloaded successfully');
     } catch (error) {
