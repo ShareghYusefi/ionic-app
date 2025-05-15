@@ -13,6 +13,7 @@ import {
 import { Share } from '@capacitor/share';
 import { Platform } from '@ionic/angular';
 import { CallNumber } from 'capacitor-call-number';
+import { CapacitorVideoPlayer } from 'capacitor-video-player';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -307,5 +308,19 @@ export class Tab2Page {
     await NativeAudio.stop({
       assetId: 'sampleAudio',
     });
+  };
+
+  playVideo = async () => {
+    try {
+      const result = await CapacitorVideoPlayer.initPlayer({
+        mode: 'fullscreen',
+        url: 'https://youtu.be/2Vv-BfVoq4g?si=1HgOmDIBI_D2eqFQ',
+        playerId: 'fullscreen',
+        componentTag: 'app-tab2',
+      });
+      console.log('Video player initialized:', result);
+    } catch (error) {
+      console.error('Error playing video:', error);
+    }
   };
 }

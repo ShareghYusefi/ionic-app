@@ -40,7 +40,12 @@
   <ion-button (click)="startAudio()" expand="full">Start audio</ion-button>
   <ion-button (click)="stopAudio()" expand="full">Stop audio</ion-button>
 
+  <ion-button (click)="playVideo()" expand="full">Play Video</ion-button>
+
   <img [src]="imageUrl" *ngIf="imageUrl" />
+
+  <!-- Mandatory id="fullscreen"  -->
+  <div id="fullscreen" slot="fixed"></div>
 
   <ion-list>
     <ion-item-sliding *ngFor="let contact of contacts">
